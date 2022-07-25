@@ -1,3 +1,5 @@
+//npm install
+//npm install --save multer
 const path = require('path');
 
 const express = require('express');
