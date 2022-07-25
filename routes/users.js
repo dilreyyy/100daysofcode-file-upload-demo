@@ -13,8 +13,10 @@ const storageConfig = multer.diskStorage({
 });
 const upload = multer({ storage: storageConfig });
 
-router.get("/", function (req, res) {
-  res.render("profiles");
+router.get("/", async function (req, res) {
+  const users = await db.getDb().collection('users').find().toArray();
+  // console.log(users);
+  res.render("profiles", {users: users});
 });
 
 router.get("/new-user", function (req, res) {
@@ -29,8 +31,8 @@ router.post("/profiles", upload.single("user-image"), async function (req, res) 
   // console.log(userName);
 
   await db.getDb().collection('users').insertOne({
-    name: userName.name,
-    imageFile: uploadedImageFile.filename
+    name: userName.username,
+    imageFile: uploadedImageFile.path
   })
 
   res.redirect("/");
